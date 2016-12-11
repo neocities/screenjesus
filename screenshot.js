@@ -12,13 +12,14 @@ var signals = {
 
 var maxTimeout = 20000
 
-if (system.args.length === 1) {
-  console.log('required args: <siteURL> <waitTime=secs>');
+if (system.args.length !== 4) {
+  console.log('required args: <siteURL> <filePath> <waitTime=secs>');
   phantom.exit(signals['missingargs'])
 }
 
 var address = system.args[1]
-var waitTime = system.args[2] * 1000
+var filePath = system.args[2]
+var waitTime = system.args[3] * 1000
 
 page.viewportSize = { width: 1295, height: 960 }
 page.clipRect = { top: 0, left: 0, width: 1280, height: 960}
@@ -57,7 +58,7 @@ page.open(address, function(status) {
   }
 
   setTimeout(function() {
-    page.render('/dev/stdout', {format: 'jpg', quality: '97'})
+    page.render(filePath, {format: 'jpg', quality: '97'})
     // console.log('Loading time ' + (Date.now() - t) + ' msec');
     phantom.exit(signals['success'])
   }, waitTime)
